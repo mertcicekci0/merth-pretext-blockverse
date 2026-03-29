@@ -1,0 +1,316 @@
+/* ── Reset & Base ──────────────────────────────────────────── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #1a1a2e;
+  --surface: #16213e;
+  --border: #000;
+  --border-w: 3px;
+  --yellow: #ffe156;
+  --pink: #ff6b9d;
+  --blue: #4ecdc4;
+  --green: #a8e6cf;
+  --orange: #ff8a5c;
+  --purple: #b088f9;
+  --red: #ff4757;
+  --white: #fafafa;
+  --gray: #8892b0;
+  --font-mono: 'Space Mono', monospace;
+  --font-sans: 'Space Grotesk', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: var(--font-mono);
+  color: var(--white);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--yellow);
+  color: #000;
+  border-bottom: var(--border-w) solid var(--border);
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  font-size: 28px;
+  color: var(--pink);
+  text-shadow: 2px 2px 0 #000;
+}
+
+.logo-text {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 var(--pink);
+}
+
+.header-stats {
+  display: flex;
+  gap: 8px;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: var(--border-w) solid #000;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 3px 3px 0 #000;
+}
+
+.stat-score { background: var(--pink); }
+.stat-level { background: var(--blue); }
+.stat-lines { background: var(--green); color: #000; }
+
+.stat-label {
+  font-size: 10px;
+  opacity: 0.7;
+  letter-spacing: 1px;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 16px;
+}
+
+/* ── Main Layout ──────────────────────────────────────────── */
+#main {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Panels ───────────────────────────────────────────────── */
+.panel {
+  width: 180px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background: #0f1628;
+  border-right: var(--border-w) solid var(--border);
+}
+
+#panel-right {
+  border-right: none;
+  border-left: var(--border-w) solid var(--border);
+}
+
+.panel-box {
+  border: var(--border-w) solid var(--border);
+  background: var(--surface);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.panel-title {
+  background: var(--purple);
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 6px 10px;
+  border-bottom: var(--border-w) solid var(--border);
+}
+
+.next-box .panel-title { background: var(--orange); }
+.hold-box .panel-title { background: var(--blue); }
+.controls-box .panel-title { background: var(--green); }
+.combo-box .panel-title { background: var(--pink); }
+
+.next-box canvas,
+.hold-box canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.control-list {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.control-row {
+  font-size: 11px;
+  color: var(--gray);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+kbd {
+  display: inline-block;
+  background: #0a0e17;
+  color: var(--yellow);
+  border: 2px solid var(--yellow);
+  padding: 1px 6px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  box-shadow: 2px 2px 0 rgba(255,225,86,0.3);
+}
+
+.combo-value {
+  font-family: var(--font-sans);
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  padding: 16px;
+  color: var(--yellow);
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+}
+
+/* ── Game Container ───────────────────────────────────────── */
+#game-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255,255,255,0.01) 10px,
+    rgba(255,255,255,0.01) 20px
+  ), var(--bg);
+  overflow: hidden;
+  position: relative;
+  min-width: 0;
+}
+
+#game {
+  display: block;
+  border: var(--border-w) solid var(--border);
+  box-shadow: 6px 6px 0 #000, 0 0 60px rgba(78, 205, 196, 0.1);
+}
+
+/* ── Mobile Controls ──────────────────────────────────────── */
+#mobile-controls {
+  display: none;
+  flex-shrink: 0;
+  padding: 8px 12px;
+  gap: 8px;
+  background: #0f1628;
+  border-top: var(--border-w) solid var(--border);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mobile-btn {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 20px;
+  width: 56px;
+  height: 56px;
+  border: var(--border-w) solid #000;
+  background: var(--surface);
+  color: var(--white);
+  box-shadow: 3px 3px 0 #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.mobile-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #000;
+}
+
+.btn-drop {
+  flex: 1;
+  max-width: 140px;
+  background: var(--pink);
+  color: #000;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.btn-hold {
+  flex: 1;
+  max-width: 100px;
+  background: var(--blue);
+  color: #000;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+/* ── Responsive: Tablet ───────────────────────────────────── */
+@media (max-width: 900px) {
+  .panel { width: 140px; }
+  .stat-pill { padding: 4px 8px; }
+  .stat-label { display: none; }
+}
+
+/* ── Responsive: Mobile ───────────────────────────────────── */
+@media (max-width: 640px) {
+  #header {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  .logo-text { font-size: 18px; }
+  .logo-icon { font-size: 22px; }
+
+  .header-stats {
+    width: 100%;
+    justify-content: center;
+  }
+  .stat-pill {
+    flex: 1;
+    justify-content: center;
+    padding: 4px 6px;
+    box-shadow: 2px 2px 0 #000;
+  }
+  .stat-label { display: none; }
+  .stat-value { font-size: 14px; }
+
+  .panel { display: none; }
+
+  #game-container {
+    padding: 4px;
+  }
+
+  #mobile-controls {
+    display: flex;
+  }
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}

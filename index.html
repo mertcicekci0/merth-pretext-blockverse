@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>BLOCKVERSE</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>▼</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header -->
+      <header id="header">
+        <div class="logo">
+          <span class="logo-icon">◧</span>
+          <span class="logo-text">BLOCKVERSE</span>
+        </div>
+        <div class="header-stats">
+          <div class="stat-pill stat-score">
+            <span class="stat-label">SCORE</span>
+            <span class="stat-value" id="score">00000</span>
+          </div>
+          <div class="stat-pill stat-level">
+            <span class="stat-label">LEVEL</span>
+            <span class="stat-value" id="level">01</span>
+          </div>
+          <div class="stat-pill stat-lines">
+            <span class="stat-label">LINES</span>
+            <span class="stat-value" id="lines">000</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Layout -->
+      <main id="main">
+        <!-- Left Panel - Next Piece -->
+        <aside id="panel-left" class="panel">
+          <div class="panel-box next-box">
+            <div class="panel-title">NEXT</div>
+            <canvas id="next-piece" width="128" height="128"></canvas>
+          </div>
+          <div class="panel-box hold-box">
+            <div class="panel-title">HOLD</div>
+            <canvas id="hold-piece" width="128" height="128"></canvas>
+          </div>
+        </aside>
+
+        <!-- Game Area -->
+        <div id="game-container">
+          <canvas id="game"></canvas>
+        </div>
+
+        <!-- Right Panel - Info -->
+        <aside id="panel-right" class="panel">
+          <div class="panel-box controls-box">
+            <div class="panel-title">CONTROLS</div>
+            <div class="control-list">
+              <div class="control-row"><kbd>←</kbd><kbd>→</kbd> MOVE</div>
+              <div class="control-row"><kbd>↑</kbd> ROTATE</div>
+              <div class="control-row"><kbd>↓</kbd> SOFT DROP</div>
+              <div class="control-row"><kbd>SPC</kbd> HARD DROP</div>
+              <div class="control-row"><kbd>C</kbd> HOLD</div>
+            </div>
+          </div>
+          <div class="panel-box combo-box">
+            <div class="panel-title">COMBO</div>
+            <div id="combo-display" class="combo-value">0x</div>
+          </div>
+        </aside>
+      </main>
+
+      <!-- Mobile Controls -->
+      <nav id="mobile-controls">
+        <button class="mobile-btn" data-action="left">◀</button>
+        <button class="mobile-btn" data-action="down">▼</button>
+        <button class="mobile-btn" data-action="rotate">⟳</button>
+        <button class="mobile-btn" data-action="right">▶</button>
+        <button class="mobile-btn btn-drop" data-action="drop">DROP</button>
+        <button class="mobile-btn btn-hold" data-action="hold">HOLD</button>
+      </nav>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

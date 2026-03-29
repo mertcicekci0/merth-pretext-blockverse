@@ -136,23 +136,28 @@ const isMobile = () => window.innerWidth <= 640
 function resize() {
   const container = document.getElementById('game-container')!
   const rect = container.getBoundingClientRect()
-  // On mobile, canvas should fill width, fit remaining height
-  const gapY = isMobile() ? 4 : 16
-  const gapX = isMobile() ? 0 : 16
+  const mobile = isMobile()
+  const gapX = mobile ? 0 : 16
+  const gapY = mobile ? 0 : 16
+  const dpr = window.devicePixelRatio || 1
+
+  // Calculate cell size to fit perfectly inside the container
   CELL = Math.floor(Math.min((rect.width - gapX) / COLS, (rect.height - gapY) / ROWS))
   CELL = Math.max(CELL, 14)
   CANVAS_W = COLS * CELL
   CANVAS_H = ROWS * CELL
-  canvas.width = CANVAS_W
-  canvas.height = CANVAS_H
-  // On mobile, stretch canvas to full width
-  if (isMobile()) {
-    canvas.style.width = '100%'
-    canvas.style.height = `${CANVAS_H}px`
-  } else {
-    canvas.style.width = ''
-    canvas.style.height = ''
-  }
+
+  // CSS size = logical pixels; canvas buffer = physical pixels for sharpness
+  const cssW = CANVAS_W
+  const cssH = CANVAS_H
+  canvas.width = Math.round(cssW * dpr)
+  canvas.height = Math.round(cssH * dpr)
+  canvas.style.width = `${cssW}px`
+  canvas.style.height = `${cssH}px`
+
+  // Scale context so all draw calls use logical coordinates
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
   wallPrepared = prepareWithSegments(wallText, WALL_FONT)
   initFloatingGlyphs()
 }
@@ -311,12 +316,22 @@ function drawGrid() {
 }
 
 function drawMiniPiece(cvs: HTMLCanvasElement, context: CanvasRenderingContext2D, piece: Piece | null) {
-  context.clearRect(0, 0, cvs.width, cvs.height)
-  context.fillStyle = '#16213e'; context.fillRect(0, 0, cvs.width, cvs.height)
+  const dpr = window.devicePixelRatio || 1
+  // Use the CSS size as logical size
+  const logW = cvs.getBoundingClientRect().width || cvs.width
+  const logH = cvs.getBoundingClientRect().height || cvs.height
+  const bufW = Math.round(logW * dpr)
+  const bufH = Math.round(logH * dpr)
+  if (cvs.width !== bufW || cvs.height !== bufH) {
+    cvs.width = bufW; cvs.height = bufH
+  }
+  context.setTransform(dpr, 0, 0, dpr, 0, 0)
+  context.clearRect(0, 0, logW, logH)
+  context.fillStyle = '#16213e'; context.fillRect(0, 0, logW, logH)
   if (!piece) return
   const shape = piece.shape, rows = shape.length, cols = shape[0].length
-  const mc = Math.floor(Math.min(cvs.width / (cols + 1), cvs.height / (rows + 1)))
-  const ox = Math.floor((cvs.width - cols * mc) / 2), oy = Math.floor((cvs.height - rows * mc) / 2)
+  const mc = Math.floor(Math.min(logW / (cols + 1), logH / (rows + 1)))
+  const ox = Math.floor((logW - cols * mc) / 2), oy = Math.floor((logH - rows * mc) / 2)
   const c = COLORS[piece.colorKey]
   for (let r = 0; r < rows; r++)
     for (let col = 0; col < cols; col++)

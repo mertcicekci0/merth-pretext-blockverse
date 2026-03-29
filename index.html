@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>BLOCKVERSE</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>▼</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◧</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -35,7 +35,7 @@
 
       <!-- Main Layout -->
       <main id="main">
-        <!-- Left Panel - Next Piece -->
+        <!-- Left Panel -->
         <aside id="panel-left" class="panel">
           <div class="panel-box next-box">
             <div class="panel-title">NEXT</div>
@@ -49,10 +49,26 @@
 
         <!-- Game Area -->
         <div id="game-container">
+          <!-- Mobile inline preview row -->
+          <div id="mobile-preview">
+            <div class="mini-box mini-hold">
+              <span class="mini-label">HOLD</span>
+              <canvas id="hold-piece-m" width="80" height="80"></canvas>
+            </div>
+            <div class="mobile-score-row">
+              <span id="score-m">00000</span>
+              <span class="mobile-score-sep">·</span>
+              <span>LV <span id="level-m">01</span></span>
+            </div>
+            <div class="mini-box mini-next">
+              <span class="mini-label">NEXT</span>
+              <canvas id="next-piece-m" width="80" height="80"></canvas>
+            </div>
+          </div>
           <canvas id="game"></canvas>
         </div>
 
-        <!-- Right Panel - Info -->
+        <!-- Right Panel -->
         <aside id="panel-right" class="panel">
           <div class="panel-box controls-box">
             <div class="panel-title">CONTROLS</div>
@@ -73,12 +89,32 @@
 
       <!-- Mobile Controls -->
       <nav id="mobile-controls">
-        <button class="mobile-btn" data-action="left">◀</button>
-        <button class="mobile-btn" data-action="down">▼</button>
-        <button class="mobile-btn" data-action="rotate">⟳</button>
-        <button class="mobile-btn" data-action="right">▶</button>
-        <button class="mobile-btn btn-drop" data-action="drop">DROP</button>
-        <button class="mobile-btn btn-hold" data-action="hold">HOLD</button>
+        <div class="mc-row mc-row-main">
+          <div class="mc-dpad">
+            <button class="mc-btn mc-left" data-action="left" aria-label="Move left">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <button class="mc-btn mc-down" data-action="down" aria-label="Soft drop">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+            </button>
+            <button class="mc-btn mc-right" data-action="right" aria-label="Move right">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+            </button>
+          </div>
+          <div class="mc-actions">
+            <button class="mc-btn mc-rotate" data-action="rotate" aria-label="Rotate">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+            </button>
+            <button class="mc-btn mc-hold" data-action="hold" aria-label="Hold">
+              <span>H</span>
+            </button>
+          </div>
+        </div>
+        <button class="mc-btn mc-drop" data-action="drop" aria-label="Hard drop">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+          DROP
+        </button>
       </nav>
     </div>
     <script type="module" src="/src/main.ts"></script>

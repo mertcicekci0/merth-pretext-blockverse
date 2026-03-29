@@ -1,4 +1,4 @@
-/* ── Reset & Base ──────────────────────────────────────────── */
+/* ── Reset & Vars ─────────────────────────────────────────── */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
@@ -27,10 +27,13 @@ html, body {
   color: var(--white);
   -webkit-user-select: none;
   user-select: none;
+  touch-action: none;
+  overscroll-behavior: none;
 }
 
 #app {
   height: 100%;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -40,7 +43,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
+  padding: 10px 20px;
   background: var(--yellow);
   color: #000;
   border-bottom: var(--border-w) solid var(--border);
@@ -88,16 +91,8 @@ html, body {
 .stat-level { background: var(--blue); }
 .stat-lines { background: var(--green); color: #000; }
 
-.stat-label {
-  font-size: 10px;
-  opacity: 0.7;
-  letter-spacing: 1px;
-}
-
-.stat-value {
-  font-family: var(--font-mono);
-  font-size: 16px;
-}
+.stat-label { font-size: 10px; opacity: 0.7; letter-spacing: 1px; }
+.stat-value { font-family: var(--font-mono); font-size: 16px; }
 
 /* ── Main Layout ──────────────────────────────────────────── */
 #main {
@@ -108,7 +103,7 @@ html, body {
   min-height: 0;
 }
 
-/* ── Panels ───────────────────────────────────────────────── */
+/* ── Desktop Panels ───────────────────────────────────────── */
 .panel {
   width: 180px;
   flex-shrink: 0;
@@ -120,10 +115,7 @@ html, body {
   border-right: var(--border-w) solid var(--border);
 }
 
-#panel-right {
-  border-right: none;
-  border-left: var(--border-w) solid var(--border);
-}
+#panel-right { border-right: none; border-left: var(--border-w) solid var(--border); }
 
 .panel-box {
   border: var(--border-w) solid var(--border);
@@ -146,64 +138,37 @@ html, body {
 .controls-box .panel-title { background: var(--green); }
 .combo-box .panel-title { background: var(--pink); }
 
-.next-box canvas,
-.hold-box canvas {
-  display: block;
-  width: 100%;
-  height: auto;
-  image-rendering: pixelated;
+.next-box canvas, .hold-box canvas {
+  display: block; width: 100%; height: auto; image-rendering: pixelated;
 }
 
-.control-list {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.control-row {
-  font-size: 11px;
-  color: var(--gray);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
+.control-list { padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+.control-row { font-size: 11px; color: var(--gray); display: flex; align-items: center; gap: 4px; }
 
 kbd {
   display: inline-block;
-  background: #0a0e17;
-  color: var(--yellow);
+  background: #0a0e17; color: var(--yellow);
   border: 2px solid var(--yellow);
-  padding: 1px 6px;
-  font-size: 10px;
-  font-family: var(--font-mono);
-  font-weight: 700;
+  padding: 1px 6px; font-size: 10px;
+  font-family: var(--font-mono); font-weight: 700;
   box-shadow: 2px 2px 0 rgba(255,225,86,0.3);
 }
 
 .combo-value {
-  font-family: var(--font-sans);
-  font-size: 36px;
-  font-weight: 700;
-  text-align: center;
-  padding: 16px;
-  color: var(--yellow);
+  font-family: var(--font-sans); font-size: 36px; font-weight: 700;
+  text-align: center; padding: 16px; color: var(--yellow);
   text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+  transition: transform 0.15s ease, color 0.15s ease;
 }
 
 /* ── Game Container ───────────────────────────────────────── */
 #game-container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 10px,
-    rgba(255,255,255,0.01) 10px,
-    rgba(255,255,255,0.01) 20px
-  ), var(--bg);
+  background: var(--bg);
   overflow: hidden;
   position: relative;
   min-width: 0;
@@ -212,105 +177,243 @@ kbd {
 #game {
   display: block;
   border: var(--border-w) solid var(--border);
-  box-shadow: 6px 6px 0 #000, 0 0 60px rgba(78, 205, 196, 0.1);
+  box-shadow: 6px 6px 0 #000;
 }
 
-/* ── Mobile Controls ──────────────────────────────────────── */
-#mobile-controls {
-  display: none;
-  flex-shrink: 0;
-  padding: 8px 12px;
-  gap: 8px;
-  background: #0f1628;
-  border-top: var(--border-w) solid var(--border);
-  flex-wrap: wrap;
-  justify-content: center;
-}
+/* ── Mobile Preview (hidden on desktop) ───────────────────── */
+#mobile-preview { display: none; }
 
-.mobile-btn {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 20px;
-  width: 56px;
-  height: 56px;
-  border: var(--border-w) solid #000;
-  background: var(--surface);
-  color: var(--white);
-  box-shadow: 3px 3px 0 #000;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
+/* ── Mobile Controls (hidden on desktop) ──────────────────── */
+#mobile-controls { display: none; }
 
-.mobile-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 #000;
-}
-
-.btn-drop {
-  flex: 1;
-  max-width: 140px;
-  background: var(--pink);
-  color: #000;
-  font-size: 14px;
-  letter-spacing: 2px;
-}
-
-.btn-hold {
-  flex: 1;
-  max-width: 100px;
-  background: var(--blue);
-  color: #000;
-  font-size: 14px;
-  letter-spacing: 2px;
-}
-
-/* ── Responsive: Tablet ───────────────────────────────────── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TABLET
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width: 900px) {
   .panel { width: 140px; }
   .stat-pill { padding: 4px 8px; }
   .stat-label { display: none; }
 }
 
-/* ── Responsive: Mobile ───────────────────────────────────── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MOBILE
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width: 640px) {
+  /* Header: compact single row */
   #header {
-    flex-direction: column;
-    gap: 8px;
-    padding: 8px 12px;
+    padding: 6px 10px;
+    gap: 6px;
   }
-  .logo-text { font-size: 18px; }
-  .logo-icon { font-size: 22px; }
+  .logo-icon { font-size: 20px; }
+  .logo-text { font-size: 15px; letter-spacing: 1px; }
 
-  .header-stats {
-    width: 100%;
-    justify-content: center;
-  }
+  .header-stats { gap: 4px; }
   .stat-pill {
-    flex: 1;
-    justify-content: center;
-    padding: 4px 6px;
+    padding: 3px 6px;
     box-shadow: 2px 2px 0 #000;
+    font-size: 11px;
   }
   .stat-label { display: none; }
-  .stat-value { font-size: 14px; }
+  .stat-value { font-size: 13px; }
 
+  /* Hide desktop panels */
   .panel { display: none; }
 
+  /* Game container fills available space */
   #game-container {
-    padding: 4px;
+    flex: 1;
+    padding: 0;
+    gap: 0;
+    justify-content: flex-start;
   }
 
+  #game {
+    box-shadow: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  /* ── Mobile Inline Preview ──────────────────────────────── */
+  #mobile-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 4px 8px;
+    background: #0f1628;
+    border-bottom: 2px solid #000;
+    flex-shrink: 0;
+  }
+
+  .mini-box {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--surface);
+    border: 2px solid #000;
+    padding: 2px 4px;
+    box-shadow: 2px 2px 0 #000;
+  }
+
+  .mini-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--gray);
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+  }
+
+  .mini-hold .mini-label { color: var(--blue); }
+  .mini-next .mini-label { color: var(--orange); }
+
+  .mini-box canvas {
+    display: block;
+    width: 40px;
+    height: 40px;
+    image-rendering: pixelated;
+  }
+
+  .mobile-score-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--yellow);
+    text-shadow: 1px 1px 0 #000;
+  }
+  .mobile-score-sep { color: var(--gray); opacity: 0.4; }
+
+  /* ── Mobile Controls ────────────────────────────────────── */
   #mobile-controls {
     display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding: 6px 8px 10px;
+    gap: 6px;
+    background: #0a0e1a;
+    border-top: var(--border-w) solid var(--border);
+
+    /* Safe area for phones with home bars */
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
   }
+
+  .mc-row-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* D-pad: three buttons in a row */
+  .mc-dpad {
+    display: flex;
+    gap: 4px;
+  }
+
+  .mc-actions {
+    display: flex;
+    gap: 4px;
+  }
+
+  .mc-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--border-w) solid #000;
+    background: var(--surface);
+    color: var(--white);
+    box-shadow: 3px 3px 0 #000;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    transition: transform 50ms, box-shadow 50ms;
+  }
+
+  .mc-btn:active, .mc-btn.pressed {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 #000;
+  }
+
+  .mc-btn svg { width: 28px; height: 28px; pointer-events: none; }
+
+  /* Direction buttons */
+  .mc-left, .mc-right {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+  }
+
+  .mc-down {
+    width: 52px;
+    height: 60px;
+    background: var(--blue);
+    color: #000;
+    border-radius: 4px;
+  }
+
+  /* Action buttons */
+  .mc-rotate {
+    width: 60px;
+    height: 60px;
+    background: var(--purple);
+    color: #000;
+    border-radius: 50%;
+  }
+
+  .mc-hold {
+    width: 52px;
+    height: 60px;
+    background: var(--orange);
+    color: #000;
+    font-size: 18px;
+    border-radius: 4px;
+  }
+
+  /* Drop bar */
+  .mc-drop {
+    width: 100%;
+    height: 46px;
+    background: var(--pink);
+    color: #000;
+    font-size: 15px;
+    letter-spacing: 3px;
+    border-radius: 4px;
+    gap: 2px;
+  }
+
+  .mc-drop svg { width: 18px; height: 18px; }
 }
 
-/* ── Animations ───────────────────────────────────────────── */
-@keyframes flash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+/* ── Very small phones ────────────────────────────────────── */
+@media (max-width: 380px) {
+  .mc-left, .mc-right { width: 52px; height: 52px; }
+  .mc-down { width: 44px; height: 52px; }
+  .mc-rotate { width: 52px; height: 52px; }
+  .mc-hold { width: 44px; height: 52px; }
+  .mc-drop { height: 40px; font-size: 13px; }
+  .mc-btn svg { width: 24px; height: 24px; }
+}
+
+/* ── Landscape mobile ─────────────────────────────────────── */
+@media (max-height: 500px) and (orientation: landscape) {
+  #header { padding: 4px 10px; }
+  .logo-icon { font-size: 16px; }
+  .logo-text { font-size: 13px; }
+  .stat-pill { padding: 2px 5px; }
+  .stat-value { font-size: 12px; }
+
+  #mobile-preview { padding: 2px 8px; }
+  .mini-box canvas { width: 30px; height: 30px; }
+
+  #mobile-controls { padding: 4px 8px; gap: 4px; }
+  .mc-left, .mc-right { width: 48px; height: 44px; }
+  .mc-down { width: 40px; height: 44px; }
+  .mc-rotate { width: 48px; height: 44px; border-radius: 22px; }
+  .mc-hold { width: 40px; height: 44px; }
+  .mc-drop { height: 34px; font-size: 12px; }
+  .mc-btn svg { width: 22px; height: 22px; }
 }
